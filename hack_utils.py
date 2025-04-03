@@ -96,9 +96,9 @@ def getComputerMemoryString(words) -> str:
 
     # Выбираем по одной строке на каждое слово. Всего 16 строк,
     # но они разделены на две половины.
-    linesWithWords: str = random.sample(range(16 * 2), len(words))
+    linesWithWords: int = random.sample(range(16 * 2), len(words))
     # Начальный адрес памяти (это тоже косметика).
-    memoryAddress: str = 16 * random.randint(0, 4000)
+    memoryAddress: int = 16 * random.randint(0, 4000)
 
     # Создаем строку "памяти компьютера".
     computerMemory: list[str] = []  # Будет содержать 16 строк, по одной на каждую линию.
@@ -137,6 +137,13 @@ def getComputerMemoryString(words) -> str:
     # Каждая строка в списке computerMemory объединяется в одну большую строку:
     return '\n'.join(computerMemory)
 
+def is_valid_password(guess_answer) -> bool:
+    for ch in guess_answer:
+        if ch.upper() in string.ascii_uppercase:
+            return True
+        else:
+            return False
+
 
 def askForPlayerGuess(words, tries):
     """Позволяет игроку ввести предположение пароля."""
@@ -144,12 +151,14 @@ def askForPlayerGuess(words, tries):
         print('\nВведите пароль: (осталось {} попыток)'.format(tries))
         guess = input('> ').upper()
 
-        for ch in string.digits:
-            while ch in guess:
-                print("Пароль не должен содержать цифры")
-                guess = input('> ').upper()
+        while not is_valid_password(guess):
+            print("Пароль должен содержать буквы только латинского алфавита")
+            guess = input('> ').upper()
+
 
         if guess in words:
             return guess
         print('Это не одно из возможных паролей, перечисленных выше.')
         print('Попробуйте ввести "{}" или "{}".'.format(words[0], words[1]))
+
+
