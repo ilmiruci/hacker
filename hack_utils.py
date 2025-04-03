@@ -2,8 +2,11 @@ import random, string
 
 # Установка констант:
 # Символы для заполнения "памяти компьютера".
+# TODO: Вынести в файл констант
+# from core.constants import GARBAGE_CHARS
 GARBAGE_CHARS: str = '~!@#$%^&*()_+-={}[]|;:,.<>?/'
 
+# TODO: Название файла
 # Загрузка списка WORDS из текстового файла с семибуквенными словами.
 with open('seven_letter_words.txt') as wordListFile:
     WORDS = wordListFile.readlines()
@@ -25,6 +28,7 @@ def get_max_tries(difficulty_level) -> int:
             return 6
         case "4":
             return 7
+        # TODO: значение по умолчанию
 
 def getWords() -> list:
     """Возвращает список из 12 слов, которые могут быть паролем.
@@ -98,7 +102,7 @@ def getComputerMemoryString(words) -> str:
     # но они разделены на две половины.
     linesWithWords: str = random.sample(range(16 * 2), len(words))
     # Начальный адрес памяти (это тоже косметика).
-    memoryAddress: str = 16 * random.randint(0, 4000)
+    memoryAddress: int = 16 * random.randint(0, 4000)
 
     # Создаем строку "памяти компьютера".
     computerMemory: list[str] = []  # Будет содержать 16 строк, по одной на каждую линию.
@@ -127,6 +131,11 @@ def getComputerMemoryString(words) -> str:
                          + rightHalf[insertionIndex + 7:])
             nextWord += 1  # Переходим к следующему слову.
 
+            """
+            0x13d0;SPECIES?_<*:^/:0x14d0>?(MEXICAN/*=!|;
+            0x13e0]@|@}>_^{]|$^=(.0x14e0>}$/-)/}@[~,|)*+
+            """
+
         computerMemory.append('0x' + hex(memoryAddress)[2:].zfill(4)
                               + '  ' + leftHalf + '    '
                               + '0x' + hex(memoryAddress + (16 * 16))[2:].zfill(4)
@@ -143,6 +152,13 @@ def askForPlayerGuess(words, tries):
     while True:
         print('\nВведите пароль: (осталось {} попыток)'.format(tries))
         guess = input('> ').upper()
+
+        # TODO: Изменить логику: Лучше проверить символы
+        #  введенного пароля, что содержат только латинские буквы.
+        # is_valid_password(guess)
+        # while not is_valid_password(guess):
+        #     print("Пароль не должен содержать цифры")
+        #     guess = input('> ').upper()
 
         for ch in string.digits:
             while ch in guess:
