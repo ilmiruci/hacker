@@ -1,30 +1,51 @@
-import random, string
+import json
+import random, string, os
+from pathlib import Path
 
-# Установка констант:
-# Символы для заполнения "памяти компьютера".
+
+BASE_DIR = Path(__name__).resolve().parent
+
+words_file_name = "seven_letter_words.txt"
+words_file_path = os.path.join(BASE_DIR, "utils", words_file_name)
+config_file_name = "config.json"
+config_file_path = os.path.join(BASE_DIR, "utils", config_file_name)
+
+with open(config_file_path, mode="r", encoding="UTF-8") as config_file:
+    context: dict = json.load(config_file)
+
+
+CONFIG = context
 GARBAGE_CHARS: str = '~!@#$%^&*()_+-={}[]|;:,.<>?/'
 
-# Загрузка списка WORDS из текстового файла с семибуквенными словами.
-with open('seven_letter_words.txt') as wordListFile:
+
+with open(words_file_path, mode="r", encoding="UTF-8") as wordListFile:
     WORDS = wordListFile.readlines()
 for i in range(len(WORDS)):
-    # Преобразуем каждое слово в верхний регистр и удаляем символ новой строки:
     WORDS[i] = WORDS[i].strip().upper()
 
 def get_difficulty_level() -> str:
-    difficulty_level = str(input("Уровень сложности (1-4, 1 - самый сложный, 4 - самый легкий)> "))
+    difficulty_level = int(input("Уровень сложности (1-5, 1 - самый легкий, 5 - самый сложный)> "))
+
+    while difficulty_level < 1 or difficulty_level > 5:
+        difficulty_level = int(input("Уровень сложности (1-5, 1 - самый легкий, 5 - самый сложный)> "))
+
+    match difficulty_level:
+        case 1:
+            difficulty_level = "very_easy"
+        case 2:
+            difficulty_level = "easy"
+        case 3:
+            difficulty_level = "medium"
+        case 4:
+            difficulty_level = "hard"
+        case 5:
+            difficulty_level = "very hard"
+
     return difficulty_level
 
 def get_max_tries(difficulty_level) -> int:
-    match difficulty_level:
-        case "1":
-            return 4
-        case "2":
-            return 5
-        case "3":
-            return 6
-        case "4":
-            return 7
+    attempts = CONFIG.get(difficulty_level, {}).get("attempts", 4)
+    return attempts
 
 def getWords() -> list:
     """Возвращает список из 12 слов, которые могут быть паролем.

@@ -12,7 +12,7 @@ import random, sys
 GARBAGE_CHARS = '~!@#$%^&*()_+-={}[]|;:,.<>?/'
 
 # Загрузка списка WORDS из текстового файла с семибуквенными словами.
-with open('seven_letter_words.txt') as wordListFile:
+with open('utils/seven_letter_words.txt') as wordListFile:
     WORDS = wordListFile.readlines()
 for i in range(len(WORDS)):
     # Преобразуем каждое слово в верхний регистр и удаляем символ новой строки:

@@ -1,8 +1,8 @@
 import random
 import sys
 
-from hack_utils import (get_difficulty_level, get_max_tries, askForPlayerGuess, getComputerMemoryString, getWords,
-                        numMatchingLetters,)
+from utils.hack_utils import (get_difficulty_level, get_max_tries, askForPlayerGuess, getComputerMemoryString, getWords,
+                              numMatchingLetters, )
 
 def main():
     print('''Мини-игра "h@ck3r"
@@ -21,7 +21,6 @@ def main():
 
     print()
     print(computerMemory)
-    # Начинаем с 4 попыток, уменьшая их количество:
     max_tries = get_max_tries(difficulty_level)
     for triesRemaining in range(max_tries, 0, -1):
         playerMove = askForPlayerGuess(gameWords, triesRemaining)
