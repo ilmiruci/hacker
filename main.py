@@ -1,8 +1,10 @@
 import random
 import sys
+import logging
 
 from utils.hack_utils import (get_difficulty_level, get_max_tries, askForPlayerGuess, getComputerMemoryString, getWords,
                               numMatchingLetters, )
+from utils.config import configure_logging
 
 def main():
     print('''Мини-игра "h@ck3r"
@@ -26,6 +28,7 @@ def main():
         playerMove = askForPlayerGuess(gameWords, triesRemaining)
         if playerMove == secretPassword:
             print('Д О С Т У П   Р А З Р Е Ш Е Н')
+            logger.info("Пароль угадан")
             return
         else:
             numMatches = numMatchingLetters(secretPassword, playerMove)
@@ -33,10 +36,11 @@ def main():
     print('Попытки закончились. Секретный пароль был {}.'.format(secretPassword))
 
 
-
-
 # Если программа запущена (а не импортирована), запускаем игру:
 if __name__ == '__main__':
+    logger = logging.getLogger("__name__")
+    configure_logging()
+
     try:
         main()
     except KeyboardInterrupt:
