@@ -4,9 +4,12 @@ import logging
 
 from utils.hack_utils import (get_difficulty_level, get_max_tries, askForPlayerGuess, getComputerMemoryString, getWords,
                               numMatchingLetters, )
-from utils.config import configure_logging
+from utils.config import log_format
+
+from logging.handlers import RotatingFileHandler
 
 def main():
+    logger.debug("oiadj")
     print('''Мини-игра "h@ck3r"
 Найдите пароль в памяти компьютера. Вам даются подсказки после
 каждой попытки. Например, если секретный пароль – MONITOR, а игрок
@@ -36,10 +39,24 @@ def main():
     print('Попытки закончились. Секретный пароль был {}.'.format(secretPassword))
 
 
-# Если программа запущена (а не импортирована), запускаем игру:
 if __name__ == '__main__':
-    logger = logging.getLogger("__name__")
-    configure_logging()
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+
+    file_handler = RotatingFileHandler(
+        'my.log',
+        mode='a',
+        maxBytes=1 * 1024 * 1024,
+        backupCount=2,
+        encoding="UTF-8",
+    )
+    stream_handler = logging.StreamHandler()
+
+    logger.addHandler(file_handler)
+    logger.addHandler(stream_handler)
+
+    file_handler.setFormatter(log_format)
+    stream_handler.setFormatter(log_format)
 
     try:
         main()

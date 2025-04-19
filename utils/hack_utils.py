@@ -7,8 +7,7 @@ import logging
 from .constants import *
 from .config import *
 
-logger = logging.getLogger("__name__")
-configure_logging()
+logger = logging.getLogger(__name__)
 
 def get_words_file_path(file_name):
     """Получает полный путь до файла со словами (пароли)"""
@@ -24,7 +23,7 @@ def read_config() -> dict:  # Что возвращает?
     config_file_path = os.path.join(BASE_DIR, "utils", config_file_name)
     with open(config_file_path, mode="r", encoding="UTF-8") as config_file:
         context: dict = json.load(config_file)
-    logger.debug("Открыт файл конфига config.json")
+    # logger.debug("Открыт файл конфига config.json")
     return context
 
 
